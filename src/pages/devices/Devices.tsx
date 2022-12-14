@@ -112,6 +112,7 @@ function Devices(){
             ).then(()=>{
                 setPageNumber('1');
                 showToast('success','Sukces!','Pomyślnie usunięto urządzenie');
+                getDevices();
             }).catch((error)=>{
                 showToast('error','Błąd!','Nie udało się usunąć urządzenia');
             });
