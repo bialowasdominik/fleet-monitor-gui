@@ -1,0 +1,33 @@
+.navContainer{
+    width: 14rem;
+}
+ul{
+    list-style: none;
+}
+.logoButton{
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    transition: all 300ms ease;
+    background-color: transparent;
+    border: 0;
+}
+.menuButton{
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 300ms ease;
+    background-color: transparent;
+    border: 0;
+}
+
+.menuButton:hover{
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.buttonIcon{
+    font-size: 20px;
+    margin-right: 10px;
+}
