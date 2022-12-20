@@ -18,7 +18,7 @@ function Devices(){
     const [totalItems, setTotalItems] = useState(0);
     const [devices,setDevices] = useState();
     const [createdDeviceName,setCreatedDeviceName] = useState<any>();
-    const [deviceDetails, setDeviceDetails] = useState<{[key: string]: any}>();
+    const [deviceDetails, setDeviceDetails] = useState<any>(new DeviceDetails());
 
     const confirmDeleteDevice = (rowData:any) => {
         confirmDialog({

@@ -1,4 +1,4 @@
-export type DeviceDetails={
+export class DeviceDetails{
     Id : number | undefined
     Name : string | undefined
     VehicleBrand : string | undefined

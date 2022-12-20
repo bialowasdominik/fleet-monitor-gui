@@ -1,10 +1,6 @@
 export class DevicePosition {
-    deviceName: string | undefined;
-    driverFullname: string | undefined;
-    vehicleRegisterNumber: string | undefined;
-    vehicleBrand: string | undefined;
-    vehicleModel: string | undefined;
-    vin: string | undefined;
-    lat: number | undefined;
-    lon: number | undefined;
+    id: number | undefined;
+    name: string | undefined;
+    latitude: number | undefined;
+    longitude: number | undefined;
   }
