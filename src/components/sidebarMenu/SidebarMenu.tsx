@@ -7,10 +7,9 @@ import {
     MdDevices,
     MdNotifications,
     MdPinDrop,
-    MdLogout,
     MdSettings,
     MdNearMe,
-    MdInsights} from 'react-icons/md';
+    MdDirectionsCar} from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 export function SidebarMenu(){
@@ -32,13 +31,19 @@ export function SidebarMenu(){
                         </button>
                     </li>
                     <li>
+                        <button onClick={()=>{navigate('localisations')}} className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
+                            <MdPinDrop className={'buttonIcon'}/>
+                            <span>Lokalizacje</span>
+                        </button>
+                    </li>
+                    <li>
                         <button onClick={()=>{navigate('routes')}} className="menuButton text-sm text-color-secondary hover:text-primary-400 focus:text-primary-400">
                             <MdMap className={'buttonIcon'}/>
                             <span>Trasy</span>
                         </button>
                     </li>
                     <li >
-                        <button className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
+                        <button onClick={()=>{navigate('drivers')}} className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
                             <MdGroup className={'buttonIcon'}/>
                             <span>Kierowcy</span>
                         </button>
@@ -50,29 +55,17 @@ export function SidebarMenu(){
                         </button>
                     </li>
                     <li>
-                        <button className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
-                            <MdInsights className={'buttonIcon'}/>
-                            <span>Analityka</span>
+                        <button onClick={()=>{navigate('vehicles')}} className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
+                            <MdDirectionsCar className={'buttonIcon'}/>
+                            <span>Pojazdy</span>
                         </button>
                     </li>
-                    <li>
-                    <button onClick={()=>{navigate('notifications')}} className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
-                        <MdNotifications className={'buttonIcon'}/>
-                        <span>Powiadomienia</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button onClick={()=>{navigate('localisations')}} className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
-                            <MdPinDrop className={'buttonIcon'}/>
-                            <span>Lokalizacje</span>
-                        </button>
-                    </li>
-                    <li>
+                    {/* <li>
                         <button className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
                             <MdSettings className={'buttonIcon'}/>
                             <span>Ustawienia</span>
                         </button>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
         </div>

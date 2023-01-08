@@ -20,11 +20,8 @@ function Activity(){
                 <ToggleButton checked={theme} onChange={(e) => setTheme(e.value)} onLabel = '' offLabel = ''onIcon="pi pi-sun" offIcon="pi pi-moon" className="border-circle shadow-4"/>
                 <div className = "flex align-items-center">
                     <div className="text-color-secondary mr-2">Cześć!,<br/><span className="text-color font-bold">{name}</span></div>
-                    <Button icon="pi pi-user" className="p-button-rounded p-button-outlined h-full shadow-4"/>
+                    <Button icon="pi pi-user" className="p-button-rounded p-button-outlined h-full"/>
                 </div>
-            </div>
-            <div className="mt-6 text-color font-bold">Ostatnie powiadomienia</div>
-            <div className="card mt-3 mr-5">
             </div>
         </div>
     );

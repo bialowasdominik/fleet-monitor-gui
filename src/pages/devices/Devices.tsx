@@ -19,12 +19,19 @@ function Devices(){
     const [devices,setDevices] = useState();
     const [createdDeviceName,setCreatedDeviceName] = useState<any>();
     const [deviceDetails, setDeviceDetails] = useState<any>(new DeviceDetails());
+    const [headerName,setHeaderName] = useState<any>();
+    const [selectedDriver, setSelectedDriver] = useState<any>();
+    const [selectedDriverId, setSelectedDriverId] = useState<any>();
+    const [driverOptions, setDriverOptions] = useState<any>();
+    const [updateDeviceId, setUpdateDeviceId] = useState<any>();
 
     const confirmDeleteDevice = (rowData:any) => {
         confirmDialog({
             message: `Jesteś pewien że chcesz usunąć urządzenie "${rowData.name}" o ID: ${rowData.id} ?`,
             header: 'Usuwanie urządzenia',
             icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Tak',
+            rejectLabel: 'Nie',
             accept: () => deleteDevice(rowData.id)
         });
     }
@@ -38,15 +45,15 @@ function Devices(){
         return (
             <div>
                 <Button label="Anuluj" icon="pi pi-times" onClick={() => onHide()} className="p-button-text" />
-                <Button label="Zapisz" icon="pi pi-check" onClick={() => createDevice()} />
-            </div>
-        );
-    }
-
-    const deviceDetailModalFooter = () => {
-        return (
-            <div>
-                <Button label="Pokaż na mapie" icon="pi pi-map-marker" onClick={() => onHide()} className="p-button-rounded shadow-4"/>
+                <Button label="Zapisz" icon="pi pi-check" onClick={()=>{
+                    if(headerName.includes("Dodaj")){
+                        createDevice();
+                    } 
+                    else{
+                        editDevice();
+                    }
+                    onHide()
+                    }} />
             </div>
         );
     }
@@ -55,6 +62,14 @@ function Devices(){
         return(
             <div>
                 <Button onClick = {()=>{showDeviceDetailModal(rowData)}}icon="pi pi-info-circle" className="mr-2 p-button-rounded p-button-outlined p-button-secondary" tooltip={"Szczegóły"}/>
+                <Button onClick = {()=>
+                    {
+                        getDeviceDetails(rowData.id);
+                        setUpdateDeviceId(rowData.id);
+                        showModal(); 
+                        setHeaderName("Edytuj urządzenie")
+                    }
+                }icon="pi pi-pencil" className="mr-2 p-button-rounded p-button-outlined p-button-secondary" tooltip={"Edytuj"}/>
                 <Button onClick = {()=>{confirmDeleteDevice(rowData)}} icon="pi pi-times" className="p-button-danger p-button-outlined p-button-rounded" tooltip={"Usuń"}/>
             </div>
         );
@@ -74,12 +89,40 @@ function Devices(){
     }
 
     const showModal = () => {
+        getDrivers();
         setDisplayBasic(true);
     }
 
     const onHide = () => {
         setDisplayBasic(false);
         setDeviceDetailModal(false);
+        clearEditForm();
+    }
+
+    const clearEditForm = () => {
+        setCreatedDeviceName(null);
+        setSelectedDriver(null);
+        setSelectedDriverId(null);
+    }
+
+    const selectedVehicleTemplate = (option: any, props: any) => {
+        if (option) {
+            return (
+                <div>{option.id} - {option.firstName} {option.lastName}</div>
+            );
+        }
+
+        return (
+            <span>
+                {props.placeholder}
+            </span>
+        );
+    }
+
+    const vehicleOptionTemplate = (option: any) => {
+        return (
+            <div>{option.id} - {option.firstName} {option.lastName}</div>
+        );
     }
 
     const options = [
@@ -100,6 +143,7 @@ function Devices(){
         sortBy,
         sortDirection
     }
+    
     const deleteDevice = (id:any) => {
         axios.delete(
             AppSettings.DEVICE_URL+"/"+id,
@@ -121,7 +165,10 @@ function Devices(){
     const createDevice = ()=>{
         axios.post(
             AppSettings.DEVICE_URL,
-            JSON.stringify({name: createdDeviceName}),
+            JSON.stringify({
+                name: createdDeviceName,
+                driverId: selectedDriverId
+            }),
             {
                 headers:{
                     'Content-Type': 'application/json',
@@ -166,11 +213,52 @@ function Devices(){
             }
             ).then((response)=>{
                 setDeviceDetails(response.data);
+                setCreatedDeviceName(response.data.name);
+                setSelectedDriver(driverOptions.find((d:any)=>d.id == response.data.driverId));
             }).catch((error)=>{
                 onHide();
                 showToast('error','Błąd!','Nie można odczytać szczegółów urządzenia');
             });
     };
+
+    const getDrivers = () =>{
+        axios.get(
+            AppSettings.DRIVER_URL+"/list",
+            {
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization' : `Bearer ${auth?.token}`
+                }
+            }
+            ).then((response)=>{
+                setDriverOptions(response.data);
+            });
+    };
+
+    const editDevice = () => {
+        axios.put(
+            AppSettings.DEVICE_URL+"/"+updateDeviceId,
+            JSON.stringify({
+                name: createdDeviceName,
+                driverId: selectedDriverId
+            }),
+            {
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${auth?.token}`
+                }
+            }
+            ).then(()=>{
+                getDrivers();
+                showToast('success','Sukces!','Pomyślnie zakutualizowano urządzenie');
+            }).catch(()=>{
+                showToast('error','Błąd!','Nie udało się zakutualizować urządzenia');
+            });
+    }
+
+    useEffect(()=>{
+        getDrivers();
+    },[])
 
     useEffect(()=>{
         getDevices();
@@ -181,8 +269,8 @@ function Devices(){
             <ConfirmDialog />
             <Toast ref={toast}/>
             <div className="flex justify-content-between">
-                <span className="text-900 font-medium text-3xl">Urządzenia</span>
-                <Button label="Dodaj" icon="pi pi-plus" className="p-button-rounded shadow-4" onClick={() => showModal()}/>
+                <span className="text-color font-bold text-3xl">Urządzenia</span>
+                <Button label="Dodaj" icon="pi pi-plus" className="p-button-rounded shadow-4" onClick={() => {setHeaderName("Dodaj urządzenie");showModal()}}/>
             </div>
             <Divider />
             <div className="grid justify-content-between mt-3">
@@ -208,36 +296,53 @@ function Devices(){
                         >
                             <Column field="id" header="ID"></Column>
                             <Column field="name" header="Nazwa urządzenia"></Column>
-                            <Column header="Opcje" body={option} style={{width:'10%'}}></Column>
+                            <Column header="Opcje" body={option} style={{width:'15%'}}></Column>
                         </DataTable>
                         <Paginator className="mt-3" first={1} rows={pageSize} totalRecords={totalItems} rowsPerPageOptions={[5, 10, 15]} onPageChange={onBasicPageChange}></Paginator>
                     </div>
                 </div>
             </div>
 
-            <Dialog header="Dodaj urządzenie" visible={displayBasic} style={{ width: '50vw' }} footer={renderFooter()} onHide={() => onHide()}>
-            <span className={'p-float-label mb-4 mt-4 col'}>
-                        <InputText 
+            <Dialog header={headerName} visible={displayBasic} style={{ width: '22vw' }} footer={renderFooter} onHide={() => onHide()} closable={false}>
+                <span className={'p-float-label mt-4'}>
+                    <InputText 
                         id="deviceName" 
                         type="text" 
                         className="w-full"
+                        value={createdDeviceName}
                         onChange={(e)=>setCreatedDeviceName(e.target.value)}
                         />
-                        <label 
-                         id='deviceName'
-                         htmlFor="deviceName" 
-                         className="ml-2">
-                            Nazwa urządzenia
-                        </label>
-                    </span>
+                    <label 
+                        id='deviceName'
+                        htmlFor="deviceName" 
+                        className="ml-2">
+                        Nazwa urządzenia
+                    </label>
+                </span>
+                <Dropdown
+                        value={selectedDriver} 
+                        options={driverOptions} 
+                        onChange={e=>{
+                            setSelectedDriver(e.value);
+                            setSelectedDriverId(e.value.id)
+                        }}
+                        optionLabel="brand" 
+                        filter
+                        showClear 
+                        resetFilterOnHide
+                        filterPlaceholder="Wyszukaj po ID kierowcy" 
+                        filterBy="id" 
+                        placeholder="Wybierz kierowcę"
+                        valueTemplate={selectedVehicleTemplate} 
+                        itemTemplate={vehicleOptionTemplate} 
+                        className="w-full mt-3"/>
             </Dialog>
 
-            <Dialog header="Szczegóły urządzenia" visible={deviceDetailModal} footer={deviceDetailModalFooter} style={{ width: '50vw' }} onHide={() => onHide()}>
-                <span><b>Id:</b> {deviceDetails?.id} <br/><b>Nazwa:</b> {deviceDetails?.name}</span>
-                <Divider />
-                <span><b>Kierowca:</b> {deviceDetails?.driverFirstName} {deviceDetails?.driverLastName}</span>
-                <Divider />
-                <span><b>Pojazd:</b></span><br/>
+            <Dialog header="Szczegóły urządzenia" visible={deviceDetailModal} style={{ width: '22vw' }} onHide={() => onHide()}>
+                <span><b>Identyfikator:</b> {deviceDetails?.id} <br/><b>Nazwa:</b> {deviceDetails?.name}</span>
+                <Divider>Kierowca</Divider>
+                <h4>{deviceDetails?.driverFirstName} {deviceDetails?.driverLastName}</h4>
+                <Divider >Przypisany pojazd</Divider>
                 <span><b>Marka:</b> {deviceDetails?.vehicleBrand}</span><br/>
                 <span><b>Model:</b> {deviceDetails?.vehicleModel}</span><br/>
                 <span><b>Model:</b> {deviceDetails?.vehicleRegistrationNumber}</span><br/>

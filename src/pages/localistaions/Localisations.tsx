@@ -39,7 +39,7 @@ function Localisations(){
                         devicesLocations={devices} 
                         mapCenter={[52.23150209678616, 21.003418680863838]} 
                         scrollWhellZoom={true} 
-                        mapZoom={10}
+                        mapZoom={3}
                     />
                 </div>
         </div>

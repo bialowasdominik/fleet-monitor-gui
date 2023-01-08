@@ -15,7 +15,9 @@ interface MapProps{
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
-  shadowUrl: iconShadow
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12.5, 41],
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
