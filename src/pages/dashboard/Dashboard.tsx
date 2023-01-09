@@ -1,7 +1,67 @@
 import { Divider } from "primereact";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { MdDevices, MdDirectionsCar, MdGroup } from "react-icons/md";
+import AppSettings from "../../utils/AppSettings";
+import axios from "../../utils/axios";
+import useAuth from "../../utils/hooks/useAuth";
 
 function Dashboard(){
+    const {auth} = useAuth();
+    const [deviceAmount,setDeviceAmount] = useState<any>();
+    const [driverAmount,setDriverAmount] = useState<any>();
+    const [vehicleAmount,setVehicleAmount] = useState<any>();
+
+    const getDeviceAmount = () =>{
+        axios.get(
+            AppSettings.DEVICE_URL+"/amount",
+            {
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${auth?.token}`
+                }
+            }
+            ).then((response)=>{
+                setDeviceAmount(response.data);
+            }
+        );
+    }
+
+    const getDriverAmout = () =>{
+        axios.get(
+            AppSettings.DRIVER_URL+"/amount",
+            {
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${auth?.token}`
+                }
+            }
+            ).then((response)=>{
+                setDriverAmount(response.data);
+            }
+        );
+    }
+
+    const getVehiclesAmount = () =>{
+        axios.get(
+            AppSettings.VEHICLE_URL+"/amount",
+            {
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${auth?.token}`
+                }
+            }
+            ).then((response)=>{
+                setVehicleAmount(response.data);
+            }
+        );
+    }
+
+    useEffect(()=>{
+        getDeviceAmount();
+        getDriverAmout();
+        getVehiclesAmount();
+    },[])
+    
     return(
     <div>
         <span className="text-color font-bold text-3xl">Pulpit</span>
@@ -12,43 +72,41 @@ function Dashboard(){
                     <div className="flex justify-content-between mb-3">
                         <div>
                             <span className="block text-500 font-medium mb-3">Urządzenia</span>
-                            <div className="text-900 font-medium text-xl">7</div>
+                            <div className="text-900 font-medium text-xl">{deviceAmount}</div>
                         </div>
                         <div className="flex align-items-center justify-content-center bg-blue-100 border-round-xl" style={{ width: '2.5rem', height: '2.5rem' }}>
-                            <i className="pi pi-calculator text-blue-500 text-xl"></i>
+                            <MdDevices className="pi pi-calculator text-blue-500 text-xl"/>
                         </div>
                     </div>
-                    <span className="text-red-500 font-medium">2 </span>
-                    <span className="text-500">niski stan baterii</span>
-                </div>
+                    <span className="text-500">zarejestrowanych w systemie</span>
+                </div>             
             </div>
             <div className="col-12 md:col-6 lg:col-3 flex-grow-1">
                 <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round-xl">
                     <div className="flex justify-content-between mb-3">
                         <div>
-                            <span className="block text-500 font-medium mb-3">Oszczędności</span>
-                            <div className="text-900 font-medium text-xl">25,100 zł</div>
+                            <span className="block text-500 font-medium mb-3">Kierowcy</span>
+                            <div className="text-900 font-medium text-xl">{driverAmount}</div>
                         </div>
                         <div className="flex align-items-center justify-content-center bg-green-100 border-round-xl" style={{ width: '2.5rem', height: '2.5rem' }}>
-                            <i className="pi pi-dollar text-green-500 text-xl"></i>
+                            <MdGroup className="pi pi-dollar text-green-500 text-xl"/>
                         </div>
                     </div>
-                    <span className="text-green-500 font-medium">+12% </span>
-                    <span className="text-500">w tym miesiącu</span>
+                    <span className="text-500">zarejestrowanych w systemie</span>
                 </div>
             </div>
             <div className="col-12 md:col-6 lg:col-3 flex-grow-1">
                 <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round-xl">
                     <div className="flex justify-content-between mb-3">
                         <div>
-                            <span className="block text-500 font-medium mb-3">Powiadomienia</span>
-                            <div className="text-900 font-medium text-xl">23</div>
+                            <span className="block text-500 font-medium mb-3">Pojazdy</span>
+                            <div className="text-900 font-medium text-xl">{vehicleAmount}</div>
                         </div>
                         <div className="flex align-items-center justify-content-center bg-red-100 border-round-xl" style={{ width: '2.5rem', height: '2.5rem' }}>
-                            <i className="pi pi-bell text-red-500 text-xl"></i>
+                            <MdDirectionsCar className="pi pi-bell text-red-500 text-xl"/>
                         </div>
                     </div>
-                    <Link to='notifications' className="no-underline"><span className="text-500">Przejdź do wszystkich</span></Link>
+                    <span className="text-500">zarejestrowanych w systemie</span>
                 </div>
             </div>
         </div>

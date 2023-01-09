@@ -5,15 +5,22 @@ import {
     MdMap,
     MdGroup,
     MdDevices,
-    MdNotifications,
     MdPinDrop,
-    MdSettings,
     MdNearMe,
-    MdDirectionsCar} from 'react-icons/md';
+    MdDirectionsCar,
+    MdLogout} from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../utils/hooks/useAuth';
 
 export function SidebarMenu(){
+    const {setAuth} = useAuth();
+
     const navigate = useNavigate();
+
+    const logout = () => {
+        setAuth(null);
+        navigate('/');
+    }
     return(
         <div className='navContainer ml-3'>
             <div className="upMenu top-0">
@@ -60,12 +67,12 @@ export function SidebarMenu(){
                             <span>Pojazdy</span>
                         </button>
                     </li>
-                    {/* <li>
-                        <button className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
-                            <MdSettings className={'buttonIcon'}/>
-                            <span>Ustawienia</span>
+                    <li>
+                        <button onClick={()=>logout()} className="menuButton text-color-secondary text-sm hover:text-primary-400 focus:text-primary-400">
+                            <MdLogout className={'buttonIcon'}/>
+                            <span>Wyloguj</span>
                         </button>
-                    </li> */}
+                    </li>
                 </ul>
             </div>
         </div>

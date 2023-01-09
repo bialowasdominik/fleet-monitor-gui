@@ -1,5 +1,5 @@
-import { Accordion, AccordionTab, Button, Calendar, Divider, Dropdown} from 'primereact';
-import { useEffect, useState } from 'react';
+import { Accordion, AccordionTab, Button, Calendar, Divider, Dropdown, Toast} from 'primereact';
+import { useEffect, useRef, useState } from 'react';
 import RouteMap from '../../components/Map/RouteMap';
 import AppSettings from '../../utils/AppSettings';
 import axios from '../../utils/axios';
@@ -7,7 +7,7 @@ import useAuth from '../../utils/hooks/useAuth';
 
 function Routes(){
     const {auth} = useAuth();
-
+    const toast = useRef<any>(null);
     const [options, setOptions] = useState<any>();
     const [dateFrom, setDateFrom] = useState<any>();
     const [dateTo, setDateTo] = useState<any>();
@@ -21,7 +21,7 @@ function Routes(){
 
     const getRoute = () =>{
         axios.get(
-            AppSettings.DEVICE_URL+"/"+selectedVehicle?.id+"/position/route",
+            AppSettings.DEVICE_URL+"/"+selectedVehicle?.deviceId+"/position/route",
             {
                 headers:{
                     'Content-Type':'application/json',
@@ -30,9 +30,12 @@ function Routes(){
                 params
             }
             ).then((response)=>{
-                console.log(response.data);
-                setRoute(Array.from(response.data.map((item:any)=>(Array.from([item.latitude,item.longitude])))));
-            }).catch((error)=>{
+                if(response.data.length === 0){
+                    toast.current.show({severity:'warn', summary: 'Brak tras', detail:'Nie znaleziono tras dla zadanych kryteriów wyszukiwania', life: 6000});
+                }
+                else{
+                    setRoute(Array.from(response.data.map((item:any)=>(Array.from([item.latitude,item.longitude])))));
+                }
             });
     }
 
@@ -80,6 +83,7 @@ function Routes(){
 
     return(
         <div>
+            <Toast ref={toast}/>
             <span className="text-color font-bold text-3xl">Trasy</span>
             <Divider />
             <Accordion activeIndex={0}>
