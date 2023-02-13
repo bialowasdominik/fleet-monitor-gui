@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL:'https://fleet-monitor-backend.azurewebsites.net/api'
+    baseURL:'http://40.68.117.84/api'
 });
