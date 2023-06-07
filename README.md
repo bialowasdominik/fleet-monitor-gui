@@ -23,11 +23,9 @@ The application was deployed in an Azure environment using a virtual machine, II
 
 - The video shows vehicles marked on the map with pins. The pins can be clicked to show details of the vehicles and the driver at that location.
 
-https://github.com/bialowasdominik/fleet-monitor-gui/assets/106835786/9c2b3728-2176-4308-a5b8-cc914e80ef60
+https://github.com/bialowasdominik/fleet-monitor-gui/assets/106835786/557a50a9-cd8b-4f88-a504-fdce61f8d659
 
 
 - The recording shows the function of visualizing completed routes.  After selecting the vehicle and the time period, the route completed by the selected vehicle is displayed on the map.
 
-https://github.com/bialowasdominik/fleet-monitor-gui/assets/106835786/f324c572-2554-4723-bd0f-a28a2b9fca7e
-
-
+https://github.com/bialowasdominik/fleet-monitor-gui/assets/106835786/2bd3857a-070f-4803-bb53-77aea72d31d5
