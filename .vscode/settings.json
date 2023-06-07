@@ -1,4 +1,0 @@
-{
-    "appService.defaultWebAppToDeploy": "/subscriptions/5c3598e3-0df1-4003-b372-95e105be9060/AppServices/subscriptions/5c3598e3-0df1-4003-b372-95e105be9060/resourceGroups/rg-fleet-monitor/providers/Microsoft.Web/sites/fleet-monitor-frontend",
-    "appService.deploySubpath": "."
-}
