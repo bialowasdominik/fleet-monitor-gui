@@ -3,15 +3,12 @@
 
 Part of the system that was the subject of my engineering thesis. 
 
-Fleet monitor is a system for locating and recording vehicle routes in transportation companies. Application also allows you to manage drivers, vehicles and locating devices connected to the system. 
-
-**The main functions of the application:**
-1. display the number of: vehicles, devices and drivers registered in the system.
-2. display travelled routes by vehicles
-3. display vehicle location in real time
-4. management of drivers
-5. management of vehicle
-6. management of locating devices
+The system is designed to present current and historical data regarding vehicle trips in a clear manner. It enables profit optimization and ensures the safety of employees through real-time monitoring of vehicle locations.
+ - The dashboard view displays the number of registered devices, drivers, and vehicles.
+ - The location view presents a map with markers indicating the latest positions of vehicles. Clicking on a marker displays details about the vehicle, locator, and driver.
+ - The route view allows the display of a route on the map based on the selected vehicle and time frame.
+ - The views for drivers, devices, and vehicles present a table with data, enabling search, sorting, editing, and deletion of records.
+ - The application is secured by adding user registration, login, and logout functions. 
 
 **Technologies used in project:**
 - TypeScript
