@@ -10,6 +10,8 @@ The system is designed to present current and historical data regarding vehicle 
  - The views for drivers, devices, and vehicles present a table with data, enabling search, sorting, editing, and deletion of records.
  - The application is secured by adding user registration, login, and logout functions. 
 
+The application was deployed in an Azure environment using a virtual machine, IIS server, and Azure SQL.
+
 **Technologies used in project:**
 - TypeScript
 - React
